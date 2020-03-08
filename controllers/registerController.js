@@ -1,5 +1,4 @@
 // Local imports
-// const { registerService } = require("../services");
 const { registerService } = require("../services");
 
 const register = async (req, res, next) => {

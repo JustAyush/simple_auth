@@ -19,7 +19,7 @@ const {bodySchema} = require("../schemas");
 router.post('/register', joiValidator.validate(bodySchema.schemas.register, 'body'), registerController.register);
 
 // login
-router.get('/login', loginController.login);
+router.post('/login', joiValidator.validate(bodySchema.schemas.register, 'body'), loginController.login);
 
 
 module.exports = router
