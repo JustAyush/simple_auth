@@ -20,7 +20,7 @@ const register = async (req, res, next) => {
           // send success response when the new user is created
           res.json({
             status: "success",
-            message: "Successfully registered."
+            message: "Successfully registered. Please verify your email to login."
           });
         }
       })

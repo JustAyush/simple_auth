@@ -13,18 +13,42 @@ const login = async (req, res, next) => {
   try {
     await loginService
       .login(email, password)
-      .then(({ userFound, user }) => {
-        // userFound: true/false, user: object
-        if (!userFound) {
-          res.json({
-            status: "error",
-            message: "No user found with that email"
-          });
-        } else {
-          // if the user with provided email exist      
-          initPassport(passport, user);
+      .then(({ userExists, checkPassword, userWithEmail, emailResent }) => {
+        
+        if (!checkPassword) {
 
-          passport.authenticate("local", function(err, user, info) {
+          console.log('User Found', userExists);
+
+          if(userExists) {
+            // the email exists but the user has not verified yet
+            if(emailResent) {
+              // if the token has expired and the verification email has been resent
+              res.json({
+                status: "error",
+                message: `New verification email has been sent to ${email}`
+              })
+            } else {
+              // if the token has not expired
+              res.json({
+                status: "error",
+                message: `Please have a look at the confirmation email sent to ${email}`
+              })
+            }
+
+          } else {
+            // if email doesn't exist
+            res.json({
+              status: "error",
+              message: "No user found with that email"
+            });
+          }
+
+        } else {
+          // if the user with provided email exist and has verified the email
+          // check if the password is correct     
+          initPassport(passport, userWithEmail);
+
+          passport.authenticate("local", function(err, userWithEmail, info) {
             if (err) {
               return next(err);
             } else {
