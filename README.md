@@ -22,4 +22,4 @@ TO RUN THIS APP \
     Clone the repo \
     Install the dependencies (npm install) \
     Install postgreSQL server \
-    Run migration files with knex \
+    Run migration files with knex 
