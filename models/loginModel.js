@@ -63,8 +63,6 @@ const login = async (email) => {
       );
     });
 
-    console.log("User found login Model", userFound);
-
   return { userFound, user, emailVerified, resendEmail, resendToken };
 };
 

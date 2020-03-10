@@ -8,14 +8,14 @@ const { sendEmail } = require("../utils");
 const register = async (email, password) => {
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const { emailExist, randomToken, userId } = await registerModel.register(
+    const { emailExist, token, userId } = await registerModel.register(
       email,
       hashedPassword
     );
 
     if (!emailExist) {
       const subject = "Email verification mail";
-      const body = `<b>Please click on the link to verify.</b> <br/> http://localhost:3000/api/verify/${userId}/${randomToken} <br /><br/> <i>This token will expire after one day.</i>`;
+      const body = `<b>Please click on the link to verify.</b> <br/> http://localhost:3000/api/verify/${userId}/${token} <br /><br/> <i>This token will expire after one day.</i>`;
 
       // send the verification email
       sendEmail

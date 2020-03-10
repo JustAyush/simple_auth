@@ -1,6 +1,7 @@
 // Imports
 const moment = require("moment");
 const randtoken = require('rand-token');
+const bcrypt = require("bcryptjs");
 
 // Local imports
 const knex = require("../db/db");
@@ -23,13 +24,14 @@ const requestReset = async (email) => {
                 emailExists = true;
                 // set the reset token
                 resetToken = randtoken.generate(16); 
+                const hashedResetToken = await bcrypt.hash(resetToken, 10); // hash the token
                 
                 await knex("users")
                     .where({
                         id: userId
                     })
                     .update({
-                        resetToken: resetToken,
+                        resetToken: hashedResetToken,
                         resetStatus: true,
                         resetReq_at: moment().format("YYYY-MM-DD HH:mm:ss")
                     })
